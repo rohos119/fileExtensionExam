@@ -1,28 +1,29 @@
 import React, { useState, Component ,useRef, useEffect } from "react";
 
-class FileExtensionCheck extends Component{
-    state = {
-        filelist : []
+function FileExtensionCheck(){
+    const[fileList, setFileList] = useState("");
+
+    const handleFiles = (e) => {
+        setFileList(e.target.files);
     }
 
-    handleFiles = (e) => {
-        this.setState({
-            filelist : e.target.files
-        })
-        console.log(this.filelist)
+    const ExteinsonCheck=()=>{
+
     }
-    
-    render(){
-        return (
+    return (
             <div>
                 <h3>Upload File </h3>
-                <div>
-                    <input type='file' onChange={this.handleFiles} multiple/>
+                <div >
+                    <input type='file' onChange={handleFiles} multiple />
+                    <div id="row" >
+                    <p >{Object.keys(fileList).map((key,index)=>{
+                        return (<span>"{fileList[key].name}" ,</span>);
+                    })}</p>
+                    </div>
                 </div>
                 <hr />
             </div>
-        )
-    }
+        );
 }
 
 export default FileExtensionCheck;
