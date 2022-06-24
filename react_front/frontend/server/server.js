@@ -1,31 +1,30 @@
 const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 5000;
+var app = express();
 const cors = require('cors');
+
+let corsOptions = {
+    origin: "*", 
+    credential: true,
+  };
+
+app.use(cors(corsOptions));
+
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+app.use(bodyParser());
 
-
-var corsOptions = {
-    origin : 'http://localhost:3000',
-    credential : true //react 콜 permission
-}
-
+const PORT = process.env.PORT || 5000;
 
 const connection = mysql.createConnection({
-    host : process.env.host,
-    user : process.env.user,
-    password : process.env.password,
-    database : process.env.database
+    host : '143.244.178.231',
+    user : 'root',
+    password : '138096d1~~Da',
+    database : 'fileExtension'
 });
 connection.connect((err)=>{
     if(err) throw err;
     console.log('connected');
 });
-
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/getDefault', (req, res)=>{
     const sqlQuery = "SELECT * FROM defaultExtension; ";
@@ -36,6 +35,7 @@ app.get('/api/getDefault', (req, res)=>{
     
   });
 app.post('/api/updateDefault', (req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     var ex_name =req.body.name;
     var ex_apply =req.body.apply;
     const sqlUpdateQuery = "UPDATE defaultExtension SET apply = ? WHERE name = ?";
