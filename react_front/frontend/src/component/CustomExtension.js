@@ -6,7 +6,7 @@ import "../../src/CustomExtension.css";
 
 function CustomExtension({getList}){
     const [tags, setTags] = useState([]);
-    const [selected, setSelected] = useState(["papaya"]);
+    const [selected, setSelected] = useState([]);
     // useEffect(() => {
     //     onChange && onChange(tags);
     //   }, [tags]);
@@ -31,7 +31,8 @@ function CustomExtension({getList}){
     //     }
     //   }
     const onSubmit=(e)=>{
-        console.log(e.target.name);
+        e.preventDefault();
+        console.log(e.target.tag.value);
     }
 
     const tagInputs=(e)=>{
@@ -54,7 +55,6 @@ function CustomExtension({getList}){
     const tageFieldstyle ={
         height : "500px",
     }
-
 
     return (
         <form onSubmit={onSubmit}>
@@ -89,7 +89,7 @@ function CustomExtension({getList}){
             </div>
             <div className="row mt-3">
                 <div className="col-2"></div>
-                <div className="col-6 pl-1 ml-2 border border-info" style={tageFieldstyle}>
+                <div className="tag col-6 pl-1 ml-2 border border-info" style={tageFieldstyle}>
                 <TagsInput
                     value={selected}
                     onChange={setSelected}

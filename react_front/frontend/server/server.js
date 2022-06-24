@@ -15,6 +15,8 @@ app.use(bodyParser());
 
 const PORT = process.env.PORT || 5000;
 
+
+
 const connection = mysql.createConnection({
     host : '143.244.178.231',
     user : 'root',
@@ -35,7 +37,6 @@ app.get('/api/getDefault', (req, res)=>{
     
   });
 app.post('/api/updateDefault', (req,res)=>{
-    res.header("Access-Control-Allow-Origin", "*");
     var ex_name =req.body.name;
     var ex_apply =req.body.apply;
     const sqlUpdateQuery = "UPDATE defaultExtension SET apply = ? WHERE name = ?";

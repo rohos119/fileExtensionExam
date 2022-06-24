@@ -5,23 +5,26 @@ import CustomExtension from "./CustomExtension";
 
 function DefaultExtension({ExteinsonCheck}){
     const [getList, setGetList] = useState();
+    const [mainTainChecked,setMainTainChecked] =useState();
     useEffect(() => {
-      axios.get('http://localhost:5000/api/getDefault/')
+      axios.get('http://localhost:5000/api/getDefault')
         .then(res => {
           setGetList(res.data);
         })
     }, [])
     ExteinsonCheck(getList);
-    const mainTainChecked=()=>{
-        window.localStorage.setItem()
-    }
+    window.localStorage.setItem("keepCheck", JSON.stringify(getList));
+
     const toggleChange = (e) => {
         let changeItem = {};
+        let keepCheck = JSON.parse(localStorage.getItem("keepCheck"));
         if(e.target.checked){
             for(var i=0; i < getList.length; i++){
                 if(getList[i]['name'] === e.target.id){
                     getList[i]['apply'] = 1;
+                    keepCheck[i]['apply'] = 1;
                     changeItem = getList[i];
+
                     break;
                 }
             }
@@ -29,13 +32,14 @@ function DefaultExtension({ExteinsonCheck}){
             for(var j=0; j < getList.length; j++){
                 if(getList[j]['name'] === e.target.id){
                     getList[j]['apply'] = 0;
+                    keepCheck[j]['apply'] = 0;
                     changeItem = getList[j];
                     break;
                 }
             }
         }
         axios.post('http://localhost:5000/api/updateDefault/', 
-                    {name : changeItem['name'] , apply : changeItem['apply']})
+                    { name : changeItem['name'] , apply : changeItem['apply']})
                   .then(res => {
                     console.log(res);
                   })
@@ -43,10 +47,12 @@ function DefaultExtension({ExteinsonCheck}){
                     console.error(e);
                   });
               
-        console.log(changeItem);
-        console.log(getList);
-        
+        localStorage.setItem("keepCheck", JSON.stringify(keepCheck));
       };
+    const lastingCheck=()=>{
+        var temp = JSON.parse(localStorage.getItem("keepCheck"));
+        return console.log(temp);
+    }
     return (
       <div>
       <form>
@@ -55,7 +61,8 @@ function DefaultExtension({ExteinsonCheck}){
                 <span>고정 확장자</span>
             </div>
             <div className="col">
-                {getList&&getList.map(list=> 
+            {lastingCheck}
+            {getList&&getList.map(list=> 
                 <div className="form-check form-check-inline">
                 <input
                     id = {list.name}
