@@ -34,7 +34,7 @@ function FileExtensionCheck(){
             <div className="container">
                 <h3>Upload File </h3>
                 <div >
-                    <input type='file' class="form-control-file" id="exampleFormControlFile1" onChange={handleFiles} multiple  />
+                    <input type='file' className="form-control-file" id="exampleFormControlFile1" onChange={handleFiles} multiple  />
                 </div>
                 <div className="row mt-2" >
                     <p >{Object.keys(fileList).map((key,index)=>{

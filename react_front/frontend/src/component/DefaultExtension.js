@@ -12,31 +12,41 @@ function DefaultExtension({ExteinsonCheck}){
         })
     }, [])
     ExteinsonCheck(getList);
+    const mainTainChecked=()=>{
+
+    }
     const toggleChange = (e) => {
+        let changeItem = {};
         if(e.target.checked){
-            let changeItem = {};
             for(var i=0; i < getList.length; i++){
-                if(getList[i]['name'] == e.target.id){
+                if(getList[i]['name'] === e.target.id){
                     getList[i]['apply'] = 1;
                     changeItem = getList[i];
                     break;
                 }
             }
-            // axios.post("htpp://localhost:5000/api/updateDefault")
-            console.log(changeItem);
-            console.log(getList);
         }else{
             for(var j=0; j < getList.length; j++){
-                if(getList[j]['name'] == e.target.id){
+                if(getList[j]['name'] === e.target.id){
                     getList[j]['apply'] = 0;
-                    console.log(getList[j]);
-                    console.log(getList);
+                    changeItem = getList[j];
                     break;
                 }
             }
         }
+        axios.post('http://localhost:5000/api/updateDefault/', 
+                    {name : changeItem['name'] , apply : changeItem['apply']})
+                  .then(res => {
+                    console.log(res);
+                  })
+                  .catch((e)=>{
+                    console.error(e);
+                  });
+              
+        console.log(changeItem);
+        console.log(getList);
+        
       };
-
     return (
       <div>
       <form>
@@ -51,6 +61,7 @@ function DefaultExtension({ExteinsonCheck}){
                     id = {list.name}
                     type="checkbox"
                     value={list.apply}
+                    
                     className="form-check-input"
                     onChange={toggleChange}
                    

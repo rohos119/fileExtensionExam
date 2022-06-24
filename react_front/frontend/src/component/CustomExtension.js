@@ -5,9 +5,8 @@ import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../src/CustomExtension.css";
 
 function CustomExtension({getList}){
-    const [selected, setSelected] = useState([]);
     const [tags, setTags] = useState([]);
-    
+    const [selected, setSelected] = useState(["papaya"]);
     // useEffect(() => {
     //     onChange && onChange(tags);
     //   }, [tags]);
@@ -32,7 +31,11 @@ function CustomExtension({getList}){
     //     }
     //   }
     const onSubmit=(e)=>{
-        console.log(e);
+        console.log(e.target.name);
+    }
+
+    const tagInputs=(e)=>{
+        console.log(e.target.name);
     }
 
     const checkCharCode= (e)=>{
@@ -64,8 +67,9 @@ function CustomExtension({getList}){
                     <input 
                         type="text"
                         className="extension"
+                        name ="tag"
                         placeholder="확장자 입력" 
-                        // onKeyDown={selected}
+                        onKeyDown={tagInputs}
                         onKeyUp={checkCharCode} 
                         // onBlur={selected}
                         maxLength = "20" 
@@ -86,7 +90,12 @@ function CustomExtension({getList}){
             <div className="row mt-3">
                 <div className="col-2"></div>
                 <div className="col-6 pl-1 ml-2 border border-info" style={tageFieldstyle}>
-                   
+                <TagsInput
+                    value={selected}
+                    onChange={setSelected}
+                    name="fruits"
+                    placeHolder="enter fruits"
+                />  
                 </div>
             </div>
         </div>
