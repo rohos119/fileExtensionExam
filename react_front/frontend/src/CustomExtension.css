@@ -1,0 +1,21 @@
+html {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+      sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  }
+  
+  .rti--container {
+    max-width: 300px;
+  }
+
+input.extension{
+    width: 30vw;
+    height: 100%;
+    border : 1px solid;
+    border-color : #0dcaf0;
+
+}
+input.extension:focus{
+    outline : 1.5px solid;
+    outline-color: #0dcaf0;
+}
+  

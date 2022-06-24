@@ -12,20 +12,19 @@ function DefaultExtension({ExteinsonCheck}){
         })
     }, [])
     ExteinsonCheck(getList);
-    const onSubmit = (e) => {
-        e.preventDefault();
-        console.log(this.state);
-      };
     const toggleChange = (e) => {
         if(e.target.checked){
+            let changeItem = {};
             for(var i=0; i < getList.length; i++){
                 if(getList[i]['name'] == e.target.id){
                     getList[i]['apply'] = 1;
-                    console.log(getList[i]);
-                    console.log(getList);
+                    changeItem = getList[i];
                     break;
                 }
             }
+            // axios.post("htpp://localhost:5000/api/updateDefault")
+            console.log(changeItem);
+            console.log(getList);
         }else{
             for(var j=0; j < getList.length; j++){
                 if(getList[j]['name'] == e.target.id){
@@ -54,15 +53,15 @@ function DefaultExtension({ExteinsonCheck}){
                     value={list.apply}
                     className="form-check-input"
                     onChange={toggleChange}
+                   
                 />
                 <label className="form-check-label">{list.name}</label>
                 </div>
                 )}
             </div>
         </div>
-    
       </form>
-      <CustomExtension />
+      <CustomExtension getDefaultList={getList} />
       </div>
     )
 }

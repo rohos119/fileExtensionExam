@@ -3,7 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 const mysql = require('mysql');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { application } = require('express');
 
 
 var corsOptions = {
@@ -43,5 +44,12 @@ app.get('/api/getDefault', (req, res)=>{
     });
     
   });
-
+app.post('/api/updateDefault/:id', (req,res)=>{
+    const sqlUpdateQuery = "UPDATE defaultExtension SET ? WHERE id = " + req.params.id;
+    connection.query(sqlUpdateQuery,req.body,(err,result) =>{
+        if(err) throw err;
+        console.log(result);
+        res.redirect('/');
+    });
+});
 app.listen(PORT, ()=>{console.log(`Listening on port ${PORT}`)});

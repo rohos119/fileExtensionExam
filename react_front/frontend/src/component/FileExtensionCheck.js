@@ -1,4 +1,4 @@
-import React, { useState, Component ,useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultExtension from "./DefaultExtension";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
@@ -23,23 +23,24 @@ function FileExtensionCheck(){
                     acceptExtension.push(getList[j]['name']);
                 }
             }
-            if (fileExtension.filter(x=> !acceptExtension.includes(x)).length != fileExtension.length){
+            var check =fileExtension.filter(x=> !acceptExtension.includes(x));
+            if (check.length < fileExtension.length){
                 let banExtension ='허용되지 않는 확장자가 포함되어 있습니다.\n'+ fileExtension.filter(x=> acceptExtension.includes(x));
                 alert(banExtension);
             }
         }    
     }
     return (
-            <div>
+            <div className="container">
                 <h3>Upload File </h3>
                 <div >
                     <input type='file' class="form-control-file" id="exampleFormControlFile1" onChange={handleFiles} multiple  />
-                    <div id="row" >
+                </div>
+                <div className="row mt-2" >
                     <p >{Object.keys(fileList).map((key,index)=>{
-                        return (<span>"{fileList[key].name}" ,</span>);
+                        return (<span className="badge bg-info me-2">{fileList[key].name}</span>);
                     })}</p>
                     </div>
-                </div>
                 <hr />
                 <DefaultExtension ExteinsonCheck ={ExteinsonCheck}/>
             </div>
