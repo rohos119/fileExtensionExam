@@ -13,7 +13,7 @@ function DefaultExtension({ExteinsonCheck}){
     }, [])
     ExteinsonCheck(getList);
     const mainTainChecked=()=>{
-
+        window.localStorage.setItem()
     }
     const toggleChange = (e) => {
         let changeItem = {};
@@ -61,10 +61,8 @@ function DefaultExtension({ExteinsonCheck}){
                     id = {list.name}
                     type="checkbox"
                     value={list.apply}
-                    
                     className="form-check-input"
                     onChange={toggleChange}
-                   
                 />
                 <label className="form-check-label">{list.name}</label>
                 </div>

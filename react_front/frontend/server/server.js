@@ -13,10 +13,10 @@ var corsOptions = {
 
 
 const connection = mysql.createConnection({
-    host : '143.244.178.231',
-    user : 'root',
-    password : '138096d1~~Da',
-    database : 'fileExtension'
+    host : process.env.host,
+    user : process.env.user,
+    password : process.env.password,
+    database : process.env.database
 });
 connection.connect((err)=>{
     if(err) throw err;
