@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# FileExtensionExam
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+server : Ubuntu 20.04
+front-end : React.js "18.2.0"
+back-end : Node.js(express.js) "^4.18.1"
+database : mysql
 
-## Available Scripts
+* 마드라스체크에서 채용공고에 올린 스택을 기반으로 유추하여 설정하였음 
 
-In the project directory, you can run:
+## 구현요구사항
 
-### `npm start`
+1. 고정확장자 설정하여, default는 Uncheck
+2. 고정확장자가 check or uncheck 할 경우 DB에 저장된다 *새로고침시 유지
+3. 확장자 최대 입력길이 20자리
+4. Tag 추가 버튼 클릭시 DB에 저장되며, 아래쪽 영역애 표시
+5. 커스텀 확장자는 최대 200개 까지 추가가능
+6. 확장자 옆 X클릭시 Delete
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 구현방법
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1) 고정확장자 설정
+  - 고정확장자에 대한 DB를 생성, 확장자는 중복이 안되는 것이 기본임을 가정하여 PrimaryKey로 지정
+   * DB이름 = defaultFileExtension / column = { name varchar(20) , apply boolean }
+   * 추가커스텀 확장자도 동일한 DB에 저장, 이유로는 이미 Primarykey로 선정하였기에 중복체크등을 할 소요가 없음.
 
-### `npm test`
+2) 고정확장자 default는 Uncheck
+  - column에 apply의 default를 0으로 설정하여 check가 안되도록 하였음
+  ** 그러나, input button의 attr를 checked 값을 부여하였을 경우 클릭이 되지 않는 현상이 발생 -> 추가 수정소요
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3) 고정확장자에 대한 click 이벤트를 axios post로 넘겨 db에 직접 수정되도록 하였음
 
-### `npm run build`
+4) 새로고침시 유지하기 위해서 localStorage에 저장하여 front단에서 송출할때에 활용하게 하였으나 2)의 추가 수정소요와 동일
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+------------------------------------ 구현 예정 부분-------------------------------------------------------
+5) 확장자 최대 입력길이 20자리
+  - input태그의 maxlength attr를 부여햐여 기본적으로 예방, 추가적으로 DB에 저장될때 varchar(20)으로도 제한하였음
+    * 추가적인 고려사항으로 확장자는 영어 대소문자가 default임으로 한글 입력시 입력이 되지 않도록 설정하였음
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+6) Tag 추가 버튼 클릭시 DB에 저장되며, 아래쪽 영역에 표시
+  - 추가 버튼 클릭시 onSubmit으로 하기위해 event.preventDefault를 설정하여 새로고침을 예방 -> 추가 기능은 미구현
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+7) 커스텀 확장자는 최대 200개 까지 추가가능
+  - 커스텀확장자 추가시 count를 하여 200개 초과시 alert 표현
 
-### `npm run eject`
+8) 버튼형 tag를 생성하여 클릭시 axios post로 넘겨 DB에 직접 수정 가능하게 구현
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
