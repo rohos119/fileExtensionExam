@@ -1,42 +1,47 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { TagsInput } from "react-tag-input-component";
+import { useState, useEffect } from "react";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../src/CustomExtension.css";
 
 function CustomExtension({getList}){
-    const [tags, setTags] = useState([]);
-    const [selected, setSelected] = useState([]);
-    // useEffect(() => {
-    //     onChange && onChange(tags);
-    //   }, [tags]);
+    const [tags, setTags] = useState();
+    const [customCheck, setCustomCheck] = useState();
+    useEffect(() => {
+        axios.get('http://143.244.178.231:5000/api/getCustom')
+        .then(res => {
+          setTags(res.data);
+          localStorage.setItem("keepCustomCheck",JSON.stringify(res.data)); 
+        })
     
-    //   const handleOnKeyUp = e => {
-    //     e.stopPropagation();
-    
-    //     const text = e.target.value;
-    
-    //     if (e.key === "Backspace" && tags.length && !text) {
-    //       setTags(tags.slice(0, -1));
-    //     }
-    
-    //     if (text && (seprators || defaultSeprators).includes(e.key)) {
-    //       if (tags.includes(text)) {
-    //         onExisting && onExisting(text);
-    //         return;
-    //       }
-    //       setTags([...tags, text]);
-    //       e.target.value = "";
-    //       e.preventDefault();
-    //     }
-    //   }
+      }, [tags])
+     
     const onSubmit=(e)=>{
         e.preventDefault();
         console.log(e.target.tag.value);
-    }
+        let keepCheck = JSON.parse(localStorage.getItem("keepCustomCheck"));
+        keepCheck.push({'name' : e.target.tag.value});
+        localStorage.setItem("keepCustomCheck", JSON.stringify(keepCheck));
+        axios.post('http://143.244.178.231:5000/api/insertCustom/', 
+            { name : e.target.tag.value })
+            .then(res => {
+                console.log(res);
+            })
+            .catch((e)=>{
+                console.error(e);
+            });
+   }
+   const tagDelete=(e)=>{
+        e.preventDefault();
+        console.log(e.target.value);
+        axios.post('http://143.244.178.231:5000/api/deleteCustom/', 
+        { name : e.target.value })
+        .then(res => {
+            console.log(res);
+        })
+        .catch((e)=>{
+            console.error(e);
+        });
 
-    const tagInputs=(e)=>{
-        console.log(e.target.name);
     }
 
     const checkCharCode= (e)=>{
@@ -49,13 +54,13 @@ function CustomExtension({getList}){
 
     const btnstyle ={
         height : "4vh",
-        fontsize : "1rem"
+        fontsize : "1rem",
     }
 
     const tageFieldstyle ={
         height : "500px",
     }
-
+   
     return (
         <form onSubmit={onSubmit}>
         <div>
@@ -69,9 +74,7 @@ function CustomExtension({getList}){
                         className="extension"
                         name ="tag"
                         placeholder="확장자 입력" 
-                        onKeyDown={tagInputs}
                         onKeyUp={checkCharCode} 
-                        // onBlur={selected}
                         maxLength = "20" 
                         />
                 </div>
@@ -81,21 +84,24 @@ function CustomExtension({getList}){
                         style={btnstyle}
                         type="submit"
                         >
-                        <span>
-                            +추가
-                        </span>
+                        <span>+추가</span>
                     </button>
                 </div>
             </div>
             <div className="row mt-3">
                 <div className="col-2"></div>
                 <div className="tag col-6 pl-1 ml-2 border border-info" style={tageFieldstyle}>
-                <TagsInput
-                    value={selected}
-                    onChange={setSelected}
-                    name="fruits"
-                    placeHolder="enter fruits"
-                />  
+
+                {tags&&tags.map(list=> 
+                    <button
+			key = {list.name}
+                        value = {list.name} 
+                        type="button" 
+                        className="badge bg-info me-2" 
+                        onClick={tagDelete}>
+                        {list.name} X
+                    </button>
+                    )}
                 </div>
             </div>
         </div>

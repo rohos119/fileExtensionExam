@@ -36,6 +36,14 @@ app.get('/api/getDefault', (req, res)=>{
     });
     
   });
+  app.get('/api/getCustom', (req, res)=>{
+    const sqlQuery = "SELECT name FROM customExteinson; ";
+    connection.query(sqlQuery,(err,result) =>{
+        if (err) throw err;
+        res.send(result);    
+    });
+    
+  });
 app.post('/api/updateDefault', (req,res)=>{
     var ex_name =req.body.name;
     var ex_apply =req.body.apply;
@@ -45,11 +53,18 @@ app.post('/api/updateDefault', (req,res)=>{
         res.send(result);
     });
 });
-app.post('/api/updateCustom', (req,res)=>{
+app.post('/api/insertCustom', (req,res)=>{
     var ex_name =req.body.name;
-    var ex_apply =req.body.apply;
-    const sqlUpdateQuery = "UPDATE defaultExtension SET apply = ? WHERE name = ?";
-    connection.query(sqlUpdateQuery,[ex_apply,ex_name],(err,result) =>{
+    const sqlUpdateQuery = "INSERT IGNORE INTO customExteinson VALUES( ? , 0 )";
+    connection.query(sqlUpdateQuery,[ex_name],(err,result) =>{
+        if(err) throw err;
+        res.send(result);
+    });
+});
+app.post('/api/deleteCustom', (req,res)=>{
+    var ex_name =req.body.name;
+    const sqlUpdateQuery = "DELETE FROM customExteinson WHERE name = ?";
+    connection.query(sqlUpdateQuery,[ex_name],(err,result) =>{
         if(err) throw err;
         res.send(result);
     });

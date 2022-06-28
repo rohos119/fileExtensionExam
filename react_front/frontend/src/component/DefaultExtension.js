@@ -5,16 +5,21 @@ import CustomExtension from "./CustomExtension";
 
 function DefaultExtension({ExteinsonCheck}){
     const [getList, setGetList] = useState();
-    const [mainTainChecked,setMainTainChecked] =useState();
+    const [mainTainChecked,setMainTainChecked] =useState(()=>{
+      const saved = localStorage.getItem("keepCheck");
+      const initalValue = JSON.parse(saved);
+      return initalValue || "";
+    });
     useEffect(() => {
-      axios.get('http://localhost:5000/api/getDefault')
+      axios.get('http://143.244.178.231:5000/api/getDefault')
         .then(res => {
           setGetList(res.data);
+          localStorage.setItem("keepCheck",JSON.stringify(res.data));     
         })
+         
     }, [])
+   
     ExteinsonCheck(getList);
-    window.localStorage.setItem("keepCheck", JSON.stringify(getList));
-
     const toggleChange = (e) => {
         let changeItem = {};
         let keepCheck = JSON.parse(localStorage.getItem("keepCheck"));
@@ -38,7 +43,7 @@ function DefaultExtension({ExteinsonCheck}){
                 }
             }
         }
-        axios.post('http://localhost:5000/api/updateDefault/', 
+        axios.post('http://143.244.178.231:5000/api/updateDefault/', 
                     { name : changeItem['name'] , apply : changeItem['apply']})
                   .then(res => {
                     console.log(res);
@@ -48,26 +53,23 @@ function DefaultExtension({ExteinsonCheck}){
                   });
               
         localStorage.setItem("keepCheck", JSON.stringify(keepCheck));
+
       };
-    const lastingCheck=()=>{
-        var temp = JSON.parse(localStorage.getItem("keepCheck"));
-        return console.log(temp);
-    }
     return (
       <div>
       <form>
-        <div className="row">
-            <div className="col-2">
-                <span>고정 확장자</span>
+       <div className="row">           
+	     <div className="col-2">
+                <span>고정확장자</span>
             </div>
             <div className="col">
-            {lastingCheck}
-            {getList&&getList.map(list=> 
-                <div className="form-check form-check-inline">
+            {mainTainChecked&&mainTainChecked.map(list=> 
+                <div key={list.name} className="form-check form-check-inline">
                 <input
                     id = {list.name}
                     type="checkbox"
                     value={list.apply}
+                    // checked = {list.apply}
                     className="form-check-input"
                     onChange={toggleChange}
                 />

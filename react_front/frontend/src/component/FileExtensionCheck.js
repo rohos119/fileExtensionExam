@@ -18,15 +18,22 @@ function FileExtensionCheck(){
                 fileExtension.push(fileList[i]['name'].slice(fileList[i]['name'].indexOf('.')+1).toLowerCase());
                 
             }
-            for(var j=0; j<getList.length;j++){
-                if(!getList[j]['apply']){
-                    acceptExtension.push(getList[j]['name']);
+            var keepCheck = JSON.parse(localStorage.getItem("keepCheck"));
+            var keepCustomCheck = JSON.parse(localStorage.getItem("keepCustomCheck"));
+            for(var j=0; j<keepCheck.length;j++){
+                if(!keepCheck[j]['apply']){
+                    acceptExtension.push(keepCheck[j]['name']);
                 }
             }
+            for(var k=0; k<keepCustomCheck.length;k++){
+                acceptExtension.push(keepCustomCheck[k]['name']); 
+            }
+            console.log(acceptExtension);
             var check =fileExtension.filter(x=> !acceptExtension.includes(x));
             if (check.length < fileExtension.length){
                 let banExtension ='허용되지 않는 확장자가 포함되어 있습니다.\n'+ fileExtension.filter(x=> acceptExtension.includes(x));
                 alert(banExtension);
+                setFileList([]);
             }
         }    
     }
@@ -38,7 +45,7 @@ function FileExtensionCheck(){
                 </div>
                 <div className="row mt-2" >
                     <p >{Object.keys(fileList).map((key,index)=>{
-                        return (<span className="badge bg-info me-2">{fileList[key].name}</span>);
+                        return (<span key={index} type="button" className="badge bg-info me-2">{fileList[key].name}</span>);
                     })}</p>
                     </div>
                 <hr />
