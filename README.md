@@ -20,7 +20,7 @@ database : mysql
 5. 커스텀 확장자는 최대 200개 까지 추가가능
 6. 확장자 옆 X클릭시 Delete
 
-### 구현방법
+## 구현방법
 
 1) 고정확장자 설정
   - 고정확장자에 대한 DB를 생성, 확장자는 중복이 안되는 것이 기본임을 가정하여 PrimaryKey로 지정
@@ -49,3 +49,10 @@ database : mysql
 
 7) 커스텀 확장자는 최대 200개 까지 추가가능
   - 커스텀확장자 추가시 count를 하여 200개 초과시 alert 표현
+
+## 개선 필요 사항
+
+
+1) getCustom이 지속적으로 호출, useEffect 설정 해보았으나 동일 현상 지속, 계속 요청을 할경우 서버 트래픽 증가로 성능저하, interval을 주는 방법 또는 다른 것을 고민해볼 필요가 있음
+
+2) DefaultExtension에 ExtensionCheck 함수를 props로 넘기면서 여러번 alert뜨는 현상 발생, 수정필요
